@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 34, 34, 34; /* Darker gray for text */
+  --background-start-rgb: 245, 247, 250; /* Light gray for background start */
+  --background-end-rgb: 255, 255, 255; /* White for background end */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255; /* White for text */
+    --background-start-rgb: 30, 30, 30; /* Darker gray for background start */
+    --background-end-rgb: 20, 20, 20; /* Even darker gray for background end */
+  }
+}
+
+body {
+  background-color: #f5f7fa; /* Lighter background color */
+  color: #222; /* Darker text color */
+  font-family: 'Arial', sans-serif;
+}
+
+h1, h2, h3 {
+  color: #ff6347; /* Tomato color for headings */
+  font-family: 'Georgia', serif;
+}
+
+p {
+  color: #444; /* Slightly lighter gray for paragraphs */
+  line-height: 1.6;
+}
+
+button {
+  background-color: #ff6347; /* Tomato color for buttons */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #ff7f50; /* Lighter tomato color on hover */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
