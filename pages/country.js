@@ -91,9 +91,9 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="mt-auto py-4 bg-gray-200 text-center text-sm">
+      {/* <footer className="mt-auto py-4 bg-gray-200 text-center text-sm">
         <p>&copy; 2024 Dipak Patel</p>
-      </footer>
+      </footer> */}
     </div>
   );
 }
