@@ -10,4 +10,4 @@ function Footer() {
     );
   }
   
-  export default Footer; // Add this line if it's missing
+  export default Footer; // Add this line if it&apos;s missing

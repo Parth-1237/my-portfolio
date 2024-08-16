@@ -8,5 +8,5 @@ function Header({ title, subtitle }) {
     );
   }
   
-  export default Header; // Add this line if it's missing
+  export default Header; // Add this line if it&apos;s missing
   

@@ -45,7 +45,7 @@ export default function Home() {
 
         <p className="text-lg mb-4">
           Simply enter the name of a country to access key details and enrich
-          your geographical knowledge. Whether you're researching for travel,
+          your geographical knowledge. Whether you&apos;re researching for travel,
           education, or curiosity, Country Explorer is your go-to resource.
         </p>
 
