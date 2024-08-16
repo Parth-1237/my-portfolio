@@ -1,64 +1,155 @@
-'use client';
+'use client'; // Add this at the top
 
 import { useState } from 'react';
+import Head from 'next/head';
+
+async function fetchWeatherData(city) {
+  const apiKey = 'b99d12acce3f4d78b3d164554241207';
+  const response = await fetch(
+    `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`
+  );
+  const data = await response.json();
+  return data;
+}
 
 export default function WeatherApp() {
-    const [query, setQuery] = useState('');
-    const [weather, setWeather] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const API_KEY = 'b99d12acce3f4d78b3d164554241207'; // Replace with your OpenWeatherMap API key
+  const [city, setCity] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    const searchWeather = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${API_KEY}&units=metric`
-            );
-            const data = await res.json();
-            setWeather(data);
-        } catch (error) {
-            console.error("Error fetching weather data:", error);
+  const handleSearch = async () => {
+    setLoading(true);
+    const data = await fetchWeatherData(city);
+
+    console.log(data);
+
+    setWeather(data);
+    setLoading(false);
+  };
+
+  return (
+    <div className='container'>
+      <Head>
+        <title>Weather App</title>
+        <meta
+          name='description'
+          content='Get real-time weather updates for any city'
+        />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+
+      <main className='main'>
+        <h1>Weather App</h1>
+
+        <p className='description'>
+          Get Weather Details.
+        </p>
+
+        <input
+          type='text'
+          value={city}
+          onChange={e => setCity(e.target.value)}
+          placeholder='Enter city name'
+          className='input'
+        />
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <button onClick={handleSearch} className='button'>
+            Get Weather
+          </button>
+        )}
+
+        {weather ? (
+          <div className='weather'>
+            <h2>{weather.location.name}</h2>
+            <p>
+              <strong>Temperature:</strong> {weather.current.temp_c} °C
+            </p>
+            <p>
+              <strong>Condition:</strong> {weather.current.condition.text}
+            </p>
+            <p>
+              <strong>Humidity:</strong> {weather.current.humidity}%
+            </p>
+            <p>
+              <strong>Wind Speed:</strong> {weather.current.wind_kph} kph
+            </p>
+          </div>
+        ) : (
+          <div className='weather'>
+            <p>No data found</p>
+          </div>
+        )}
+      </main>
+
+      <footer className='footer'>
+        <p>&copy; 2024 Arjan Aswal</p>
+      </footer>
+
+      <style jsx>{`
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          padding: 0 2rem;
+          background-color: #f0f0f0;
         }
-        setLoading(false);
-    };
 
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-r from-blue-100 via-white to-blue-100">
-            <div className="bg-white shadow-md rounded-lg p-6 max-w-lg w-full text-center">
-                <h1 className="text-2xl font-semibold mb-4 text-gray-800">Weather Search</h1>
-                <form onSubmit={searchWeather} className="flex flex-col items-center space-y-4">
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Enter city name"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors">
-                        Search
-                    </button>
-                </form>
-                {loading && <p className="mt-4">Loading...</p>}
-                {weather && weather.main && (
-                    <div className="mt-8 text-left">
-                        <h2 className="text-xl font-semibold text-gray-800">{weather.name}</h2>
-                        <p className="mt-2"><strong>Temperature:</strong> {weather.main.temp} °C</p>
-                        <p className="mt-2"><strong>Weather:</strong> {weather.weather[0].description}</p>
-                        <p className="mt-2"><strong>Humidity:</strong> {weather.main.humidity}%</p>
-                        <p className="mt-2"><strong>Wind Speed:</strong> {weather.wind.speed} m/s</p>
-                        {weather.weather[0].icon && (
-                            <img
-                                className="mt-4 mx-auto"
-                                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                                alt={weather.weather[0].description}
-                            />
-                        )}
-                    </div>
-                )}
-                {!weather && !loading && <p className="mt-4">No data found</p>}
-            </div>
-        </main>
-    );
+        .main {
+          padding: 2rem;
+          text-align: center;
+        }
+
+        .description {
+          font-size: 1.2rem;
+          color: #333;
+          margin-bottom: 1rem;
+        }
+
+        .input {
+          padding: 0.5rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          margin-bottom: 1rem;
+        }
+
+        .button {
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          color: #fff;
+          background-color: #0070f3;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        .button:hover {
+          background-color: #005bb5;
+        }
+
+        .weather {
+          margin-top: 1rem;
+          padding: 1rem;
+          background-color: #fff;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+
+        .footer {
+          padding: 1rem;
+          text-align: center;
+          background-color: #eee;
+          border-top: 1px solid #ddd;
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+        }
+      `}</style>
+    </div>
+  );
 }
